@@ -1,5 +1,6 @@
 // WARNING:
 // To compile successfully, make sure that platform is set to x64
+
 #include "CNTKLibrary.h"
 #include <functional>
 
