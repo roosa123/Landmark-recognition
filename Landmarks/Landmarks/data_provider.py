@@ -53,3 +53,25 @@ def load_dataset(digits_dir,img_size, digits_count, max_files=float('inf')):
     return (X,Y,img_files)
 '''
 
+import os
+#import numpy as np
+from scipy.misc import imread
+
+def load(dir):
+    img_files_dirs = []
+    for root, dirs, files in os.walk(dir):
+        for file in files:
+            img_files_dirs.append(os.path.join(root, file))
+
+    N = len(img_files_dirs)
+    
+
+def run(path):
+    paths_size = len(path)
+
+    if paths_size == 2:
+        (training_dir, testing_dir) = path
+        load(training_dir)
+        load(testing_dir)
+    else:
+        load(path)

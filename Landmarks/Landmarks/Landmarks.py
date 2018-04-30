@@ -25,20 +25,39 @@ def download_data():
 	if not os.path.exists(data_path):
 		os.makedirs(data_path)
 		
-	data_downloader.Run(csv_file, data_path)
+	data_downloader.run(csv_file, data_path)
+
+def load_data():
+	print("Select type of the loaded data:")
+	load_type = input("A - train data\nB - test data\nC - both\n")
+
+	data_path = "data"
+
+	if load_type in ('A', 'a'):
+		data_path = os.path.join(data_path, "training")
+	elif load_type in ('B', 'b'):
+		data_path = os.path.join(data_path, "testing")
+	else:
+		training_path = os.path.join(data_path, "training")
+		testing_path= os.path.join(data_path, "testing")
+		data_path = (training_path, testing_path)
+
+	data_provider.run(data_path)
 
 def perform(action_no):
 	if action_no == 1:
 		download_data()
 	elif action_no == 2:
-		return
+		load_data()
 
 def main():
 	print("Available actions:\n")
 	print("1 - download data. This option downloads the data from the Internet. "
-		"It requires providing CSV file with labeled links."
-		"To read more about format of the file, select option 5 - help)")
-	print("2 - load the data. This option loads the data for training and testing from the hard drive.")
+		"The action requires providing CSV file with labeled links."
+		"To read more about format of the file, select option 5 - about&help)")
+	print("2 - load the data. This option loads the data for training or testing from the hard drive."
+		"Before running this option, you should download the data using option 1 - download data"
+		"Loading can be performed separately for both groups. For details, use option 5 - about&help")
 	print("3 - train. This option trains the network basing on the loaded data. "
 		"Before running this option, you should load the data using option 2 - load the data")
 	print("4 - test. This option loads trained model and performs testing on the loaded testing data. "
@@ -46,7 +65,7 @@ def main():
 	print("5 - about&help")
 	print("6 - exit\n")
 
-	command = input("Please select action: ")
+	command = input("Please select action (type in the number of desired option): ")
 	
 	try:
 		cmd_no = int(command)
@@ -55,6 +74,5 @@ def main():
 		return		# later change to continue
 
 	perform(cmd_no)
-
 
 main()

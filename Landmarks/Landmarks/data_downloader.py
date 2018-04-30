@@ -2,14 +2,14 @@ import sys, os, multiprocessing, urllib.request, csv, threading
 from PIL import Image
 from io import StringIO
 
-def ParseData(data_file):
+def parse_data(data_file):
 	csvfile = open(data_file, 'r')
 	csvreader = csv.reader(csvfile)
 	key_url_class_list = [line[:3] for line in csvreader]
 	return key_url_class_list[1:]  # Chop off header
 
 
-def DownloadImage(key_url_class, out_dir):
+def download_image(key_url_class, out_dir):
 	download_args_size = len(key_url_class)
 
 	if download_args_size == 2:
@@ -40,15 +40,15 @@ def DownloadImage(key_url_class, out_dir):
 		print('Warning: Could not download image %s from %s' % (key, url))
 		return
 
-def Run(csv_file, output_dir):
+def run(csv_file, output_dir):
 	print("Running download")
 
-	key_url_class_list = ParseData(csv_file)
+	key_url_class_list = parse_data(csv_file)
 
 	threads = []
 
 	for i in range(len(key_url_class_list)):
-		t2 = threading.Thread(target=DownloadImage, args=(key_url_class_list[i], output_dir))
+		t2 = threading.Thread(target=download_image, args=(key_url_class_list[i], output_dir))
 		threads.append(t2)
 		t2.start()
 	
