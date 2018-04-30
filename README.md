@@ -5,7 +5,7 @@ The project aims to determine, which one of known landmarks is present on the ph
 
 During development were used datasets from kaggle.com.
 
-##Technicals
+## Technicals
 
 Python version: 3.6.5
 
