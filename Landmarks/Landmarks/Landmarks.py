@@ -36,7 +36,18 @@ def perform(action_no):
 
 
 def main():
-	command = input("Please select action:\n")
+	print("Available actions:\n")
+	print("1 - download data. This option downloads the data from the Internet. "
+		"It requires providing CSV file with labeled links."
+		"To read more about format of the file, select option 5 - help)")
+	print("2 - load the data. This option loads the data for training and testing from the hard drive.")
+	print("3 - train. This option trains the network basing on the loaded data. "
+		"Before running this option, you should load the data using option 2 - load the data")
+	print("4 - test. This option loads trained model and performs testing on the loaded testing data. "
+		"Before running this option, you should train the network using option 3 - train.")
+	print("5 - about&help\n")
+
+	command = input("Please select action:")
 	
 	try:
 		cmd_no = int(command)

@@ -1,14 +1,4 @@
-#!/usr/bin/python
-
-# Note to Kagglers: This script will not run directly in Kaggle kernels. You
-# need to download it and run it on your local machine.
-
-# Downloads images from the Google Landmarks dataset using multiple threads.
-# Images that already exist will not be downloaded again, so the script can
-# resume a partially completed download. All images will be saved in the JPG
-# format with 90% compression quality.
-
-import sys, os, multiprocessing, urllib.request, csv
+import sys, os, multiprocessing, urllib.request, csv, threading
 from PIL import Image
 from io import StringIO
 
@@ -20,11 +10,24 @@ def ParseData(data_file):
 
 
 def DownloadImage(key_url_class, out_dir):
-	#out_dir = sys.argv[2]
-	(key, url, img_class) = key_url_class
-	filename = os.path.join(out_dir, '%s_%s.jpg' % (img_class, key))
+	download_args_size = len(key_url_class)
 
-	if img_class not in ("6651", "6696"):
+	if download_args_size == 2:
+		(key, url) = key_url_class
+		filename = os.path.join(out_dir, '%s.jpg' % key)
+	elif download_args_size == 3:
+		(key, url, img_class) = key_url_class
+
+		if img_class not in ("6651", "6696"):
+			return
+
+		directory = os.path.join(out_dir, '%s' % img_class)
+		filename = os.path.join(directory, '%s_%s.jpg' % (img_class, key))
+
+		if not os.path.exists(directory):
+			os.makedirs(directory)
+	else:
+		print("Incorrect download arguments")
 		return
 
 	if os.path.exists(filename):
@@ -32,21 +35,16 @@ def DownloadImage(key_url_class, out_dir):
 		return
 
 	try:
-		response = urllib.request.urlretrieve(url, filename)
-		#image_data = response.read()
+		urllib.request.urlretrieve(url, filename)
 	except:
 		print('Warning: Could not download image %s from %s' % (key, url))
 		return
 
 def Run(csv_file, output_dir):
-	#if len(sys.argv) != 3:
-		#print('Syntax: %s <data_file.csv> <output_dir/>' % sys.argv[0])
-		#sys.exit(0)
-		#(data_file, out_dir) = sys.argv[1:]
+	print("Running download")
 
-	if not os.path.exists(out_dir):
-		os.mkdir(out_dir)
+	key_url_class_list = ParseData(csv_file)
 
-	key_url_class_list = ParseData(data_file)
-	pool = multiprocessing.Pool(processes=50)
-	pool.map(DownloadImage, key_url_class_list)
+	for i in range(len(key_url_class_list)):
+		threading._start_new_thread(DownloadImage, (key_url_class_list[i], output_dir))
+
