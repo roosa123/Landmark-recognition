@@ -45,6 +45,13 @@ def Run(csv_file, output_dir):
 
 	key_url_class_list = ParseData(csv_file)
 
+	threads = []
+
 	for i in range(len(key_url_class_list)):
-		threading._start_new_thread(DownloadImage, (key_url_class_list[i], output_dir))
+		t2 = threading.Thread(target=DownloadImage, args=(key_url_class_list[i], output_dir))
+		threads.append(t2)
+		t2.start()
+	
+	for i in range(len(key_url_class_list)):
+		threads[i].join()
 

@@ -3,7 +3,7 @@ import data_downloader
 import data_provider
 
 def download_data():
-	csv_file = input("Type the CSV file name")
+	csv_file = input("Type the CSV file name: ")
 
 	if(csv_file[-4:] != ".csv"):
 		csv_file += ".csv"
@@ -15,9 +15,9 @@ def download_data():
 	data_path = "data"
 
 	if file_type in ('A', 'a'):
-		data_path += "\\training"
+		os.path.join(data_path, "training")
 	elif file_type in ('B', 'b'):
-		data_path += "\\testing"
+		os.path.join(data_path, "testing")
 	else:
 		print("Incorrect selection.")
 		return
@@ -33,8 +33,6 @@ def perform(action_no):
 	elif action_no == 2:
 		return
 
-
-
 def main():
 	print("Available actions:\n")
 	print("1 - download data. This option downloads the data from the Internet. "
@@ -45,14 +43,16 @@ def main():
 		"Before running this option, you should load the data using option 2 - load the data")
 	print("4 - test. This option loads trained model and performs testing on the loaded testing data. "
 		"Before running this option, you should train the network using option 3 - train.")
-	print("5 - about&help\n")
+	print("5 - about&help")
+	print("6 - exit\n")
 
-	command = input("Please select action:")
+	command = input("Please select action: ")
 	
 	try:
 		cmd_no = int(command)
 	except:
 		print("Incorrect selection.")
+		return		# later change to continue
 
 	perform(cmd_no)
 
