@@ -15,9 +15,6 @@
 # data directories
 data/
 
-# VS Code directories
-.vscode/
-
 # csv files
 *.csv
 
