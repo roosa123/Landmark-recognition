@@ -1,3 +1,4 @@
+from os import path, listdir
 from keras.models import Sequential
 from keras.layers import Conv2D, Dropout, Dense, GlobalMaxPooling2D
 
@@ -25,8 +26,27 @@ def build_network():
 
     return model
 
+def check_directories(dir):
+    if not path.exists(dir) or listdir(dir) == []:
+        return False
+    else:
+        return True
+
 def train():
-    print("\nBuiliding the network...")
+
+    train_data_dir = "data\\training"
+    validation_data_dir = "data\\validation"
+
+    if not check_directories(train_data_dir):
+        print("Unable to run training - no training data provided.\nAborting training.\n")
+        return
+    
+    if not check_directories(validation_data_dir):
+        print("Unable to run training - no validation data provided.\nAborting training.\n")
+        return
+
+    print("\nAttempting to build the network...")
+
     model = build_network()
     model.summary()
 
