@@ -46,13 +46,27 @@ def run(csv_file, output_dir):
 
 	threads = []
 
-	download_image(key_url_class_list[1], output_dir)
+	#download_image(key_url_class_list[1], output_dir)
 
-	for i in range(len(key_url_class_list)):
-		t2 = threading.Thread(target=download_image, args=(key_url_class_list[i], output_dir))
-		threads.append(t2)
-		t2.start()
+	if len(output_dir) == 2:
+		(testing_dir, validation_dir) = output_dir
+
+		set_size = len(key_url_class_list)
+		change_dir = (int)(0.2 * set_size)		#leave 20% of the training set for validation
+		
+		for i in range(set_size):
+			if i < change_dir:
+				t = threading.Thread(target=download_image, args=(key_url_class_list[i], validation_dir))
+			else:
+				t = threading.Thread(target=download_image, args=(key_url_class_list[i], testing_dir))
+			
+			threads.append(t)
+			t.start()
+	else:
+		for i in range(len(key_url_class_list)):
+			t = threading.Thread(target=download_image, args=(key_url_class_list[i], output_dir))
+			threads.append(t)
+			t.start()
 	
 	for i in range(len(key_url_class_list)):
 		threads[i].join()
-

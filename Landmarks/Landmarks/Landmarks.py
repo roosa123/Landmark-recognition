@@ -15,15 +15,23 @@ def download_data():
 	data_path = "data"
 
 	if file_type in ('A', 'a'):
-		data_path = path.join(data_path, "training")
+		training_path = path.join(data_path, "training")
+		validation_path = path.join(data_path, "validation")
+		data_path = (training_path, validation_path)
+
+		if not path.exists(training_path):
+			makedirs(training_path)
+		
+		if not path.exists(validation_path):
+			makedirs(validation_path)
 	elif file_type in ('B', 'b'):
 		data_path = path.join(data_path, "testing")
+		
+		if not path.exists(data_path):
+			makedirs(data_path)
 	else:
 		print("Incorrect selection.")
 		return
-
-	if not path.exists(data_path):
-		makedirs(data_path)
 		
 	run(csv_file, data_path)
 
