@@ -54,8 +54,9 @@ def load_dataset(digits_dir,img_size, digits_count, max_files=float('inf')):
 '''
 
 import os
-#import numpy as np
-from scipy.misc import imread
+import numpy as np
+from scipy.misc import imread, imshow, imresize
+import matplotlib.pyplot as plt
 
 def load(dir):
     img_files_dirs = []
@@ -64,7 +65,13 @@ def load(dir):
             img_files_dirs.append(os.path.join(root, file))
 
     N = len(img_files_dirs)
-    
+    imgN = 2
+    X = np.zeros([N,imgN])
+    print(X)
+
+    for i,file in enumerate(img_files_dirs):
+        img = imread(file)
+        X[i,:] = img.flatten()
 
 def run(path):
     paths_size = len(path)

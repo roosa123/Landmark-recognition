@@ -1,5 +1,4 @@
 import sys, os, multiprocessing, urllib.request, csv, threading
-from PIL import Image
 from io import StringIO
 
 def parse_data(data_file):
@@ -41,11 +40,13 @@ def download_image(key_url_class, out_dir):
 		return
 
 def run(csv_file, output_dir):
-	print("Running download")
+	print("\nRunning download...")
 
 	key_url_class_list = parse_data(csv_file)
 
 	threads = []
+
+	download_image(key_url_class_list[1], output_dir)
 
 	for i in range(len(key_url_class_list)):
 		t2 = threading.Thread(target=download_image, args=(key_url_class_list[i], output_dir))
