@@ -42,7 +42,7 @@ def perform(action_no, model = None):
 		download_data()
 	elif action_no == 2:
 		model = build_network()
-		#run_training(model)
+		run_training(model)
 	elif action_no == 3:
 		classify(model)
 	else:
