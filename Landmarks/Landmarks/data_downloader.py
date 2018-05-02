@@ -51,8 +51,6 @@ def run(csv_file, output_dir):
 
 	threads = []
 
-	#download_image(key_url_class_list[1], output_dir)
-
 	if len(output_dir) == 2:
 		(testing_dir, validation_dir) = output_dir
 

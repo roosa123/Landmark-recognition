@@ -32,6 +32,8 @@ def build_network():
                 optimizer='adam',
                 metrics=['accuracy'])
 
+    model.summary()
+
     return model
 
 def preprocess_data():
@@ -52,7 +54,7 @@ def preprocess_data():
 
     return (train_data, validation_data)
 
-def train(model, data):
+def train(model: Sequential, data: tuple):
     (train_data, val_data) = data
 
     checkpoint = ModelCheckpoint('best_model', monitor='val_loss', save_best_only=True)
@@ -66,7 +68,7 @@ def train(model, data):
         validation_steps=2
     )
 
-def run_training():
+def run_training(model: Sequential):
 
     train_data_dir = "data\\training"
     validation_data_dir = "data\\validation"
@@ -80,9 +82,6 @@ def run_training():
         return
 
     print("\nAttempting to build the network...")
-
-    model = build_network()
-    model.summary()
 
     futer_do_sieci = preprocess_data()
 

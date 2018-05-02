@@ -1,6 +1,8 @@
 from os import path, makedirs
 from data_downloader import run
-from network import run_training
+from network import run_training, build_network
+from classify import classify
+from keras.models import Sequential
 
 def download_data():
 	csv_file = input("Type the CSV file name: ")
@@ -35,28 +37,14 @@ def download_data():
 		
 	run(csv_file, data_path)
 
-# def load_data():
-# 	print("Select type of the loaded data:")
-# 	load_type = input("A - train data\nB - test data\nC - both\n")
-
-# 	data_path = "data"
-
-# 	if load_type in ('A', 'a'):
-# 		data_path = os.path.join(data_path, "training")
-# 	elif load_type in ('B', 'b'):
-# 		data_path = os.path.join(data_path, "testing")
-# 	else:
-# 		training_path = os.path.join(data_path, "training")
-# 		testing_path= os.path.join(data_path, "testing")
-# 		data_path = (training_path, testing_path)
-
-# 	data_provider.run(data_path)
-
 def perform(action_no):
 	if action_no == 1:
 		download_data()
 	elif action_no == 2:
-		run_training()
+		model = build_network()
+		#run_training(model)
+	elif action_no == 3:
+		classify(model)
 	else:
 		return
 
