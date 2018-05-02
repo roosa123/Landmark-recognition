@@ -2,7 +2,12 @@ import sys, os, multiprocessing, urllib.request, csv, threading
 from io import StringIO
 
 def parse_data(data_file):
-	csvfile = open(data_file, 'r')
+	try:
+		csvfile = open(data_file, 'r')
+	except:
+		print("Unable to read file. Did you type the name correctly?")
+		return []
+
 	csvreader = csv.reader(csvfile)
 	key_url_class_list = [line[:3] for line in csvreader]
 	return key_url_class_list[1:]  # Chop off header

@@ -1,6 +1,14 @@
 from os import path, listdir
 from keras.models import Sequential
 from keras.layers import Conv2D, Dropout, Dense, GlobalMaxPooling2D
+from keras.preprocessing.image import ImageDataGenerator
+from keras.callbacks import ModelCheckpoint
+
+def check_directories(dir):
+    if not path.exists(dir) or listdir(dir) == []:
+        return False
+    else:
+        return True
 
 def build_network():
     in_shape = (None, None, 3)
@@ -26,13 +34,39 @@ def build_network():
 
     return model
 
-def check_directories(dir):
-    if not path.exists(dir) or listdir(dir) == []:
-        return False
-    else:
-        return True
+def preprocess_data():
+    train_data = ImageDataGenerator(
+                    rotation_range=45,
+                    horizontal_flip=True,
+                    height_shift_range=0.1,
+                    width_shift_range=0.1
+                ).flow_from_directory(
+                    'data\\training',
+                    target_size=(200, 200),
+                    batch_size=32
+                )
+    validation_data = ImageDataGenerator().flow_from_directory(
+                    'data\\validation',
+                    target_size=(200, 200),
+                )
 
-def train():
+    return (train_data, validation_data)
+
+def train(model, data):
+    (train_data, val_data) = data
+
+    checkpoint = ModelCheckpoint('best_model', monitor='val_loss', save_best_only=True)
+
+    model.fit_generator(
+        train_data,
+        steps_per_epoch=64,
+        epochs=1000,
+        callbacks=[checkpoint],
+        validation_data=val_data,
+        validation_steps=2
+    )
+
+def run_training():
 
     train_data_dir = "data\\training"
     validation_data_dir = "data\\validation"
@@ -50,3 +84,6 @@ def train():
     model = build_network()
     model.summary()
 
+    futer_do_sieci = preprocess_data()
+
+    train(model, futer_do_sieci)

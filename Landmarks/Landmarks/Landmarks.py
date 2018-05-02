@@ -1,6 +1,6 @@
 from os import path, makedirs
 from data_downloader import run
-from network import train
+from network import run_training
 
 def download_data():
 	csv_file = input("Type the CSV file name: ")
@@ -11,7 +11,7 @@ def download_data():
 	print("Select the type of the CSV file (providing train data or test data):")
 
 	file_type = input("A: train data\nB: test data\n")
-		
+	
 	data_path = "data"
 
 	if file_type in ('A', 'a'):
@@ -21,7 +21,7 @@ def download_data():
 
 		if not path.exists(training_path):
 			makedirs(training_path)
-		
+
 		if not path.exists(validation_path):
 			makedirs(validation_path)
 	elif file_type in ('B', 'b'):
@@ -56,7 +56,7 @@ def perform(action_no):
 	if action_no == 1:
 		download_data()
 	elif action_no == 2:
-		train()
+		run_training()
 	else:
 		return
 
@@ -66,13 +66,13 @@ def main():
 	while cmd_no != 5:
 		print("\nAvailable actions:\n")
 		print("1 - download data. This option downloads the data from the Internet. "
-			"The action requires providing CSV file with labeled links."
+			"The action requires providing CSV file with labeled links. "
 			"To read more about format of the file, select option 4 - about&help)")
 		print("2 - train. This option trains the network basing on the loaded data. "
-			"Before running this option, you should load the data using option 1 - download the data"
+			"Before running this option, you should load the data using option 1 - download the data. "
 			"For details, use option 4 - about&help")
 		print("3 - test. This option loads trained model and performs testing on the loaded testing data. "
-			"Before running this option, you should train the network using option 2 - train."
+			"Before running this option, you should train the network using option 2 - train. "
 			"For details, use option 4 - about&help.")
 		print("4 - about&help")
 		print("5 - exit\n")
