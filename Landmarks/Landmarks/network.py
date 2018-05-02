@@ -81,7 +81,7 @@ def run_training(model: Sequential):
         print("Unable to run training - no validation data provided.\nAborting training.\n")
         return
 
-    print("\nAttempting to build the network...")
+    print("\nAttempting to train the network...")
 
     futer_do_sieci = preprocess_data()
 

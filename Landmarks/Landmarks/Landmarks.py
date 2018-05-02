@@ -37,7 +37,7 @@ def download_data():
 		
 	run(csv_file, data_path)
 
-def perform(action_no):
+def perform(action_no, model = None):
 	if action_no == 1:
 		download_data()
 	elif action_no == 2:
@@ -48,8 +48,11 @@ def perform(action_no):
 	else:
 		return
 
+	return model
+
 def main():
 	cmd_no = 0
+	model = None
 
 	while cmd_no != 5:
 		print("\nAvailable actions:\n")
@@ -73,7 +76,10 @@ def main():
 			print("Incorrect selection.")
 			continue
 
-		perform(cmd_no)
+		if model is None:
+			model = perform(cmd_no)
+		else:
+			perform(cmd_no, model=model)
 	
 	print("Exiting program.")
 
