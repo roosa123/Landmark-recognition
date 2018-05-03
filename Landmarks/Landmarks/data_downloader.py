@@ -1,5 +1,6 @@
 import sys, os, multiprocessing, urllib.request, csv, threading
 from io import StringIO
+from shutil import move
 
 def parse_data(data_file):
 	try:
@@ -22,10 +23,10 @@ def download_image(key_url_class, out_dir):
 	elif download_args_size == 3:
 		(key, url, img_class) = key_url_class
 
-		if img_class not in ("6651", "6696"):
+		if img_class not in ("6651", "6696"):		# just temporarily
 			return
 
-		directory = os.path.join(out_dir, '%s' % img_class)
+		directory = os.path.join(out_dir, img_class)
 		filename = os.path.join(directory, '%s_%s.jpg' % (img_class, key))
 
 		if not os.path.exists(directory):
@@ -50,26 +51,37 @@ def run(csv_file, output_dir):
 	key_url_class_list = parse_data(csv_file)
 
 	threads = []
+	validation_dir = None
 
 	if len(output_dir) == 2:
-		(testing_dir, validation_dir) = output_dir
-
-		set_size = len(key_url_class_list)
-		change_dir = (int)(0.2 * set_size)		#leave 20% of the training set for validation
-		
-		for i in range(set_size):
-			if i < change_dir:
-				t = threading.Thread(target=download_image, args=(key_url_class_list[i], validation_dir))
-			else:
-				t = threading.Thread(target=download_image, args=(key_url_class_list[i], testing_dir))
-			
-			threads.append(t)
-			t.start()
+		(training_dir, validation_dir) = output_dir
+		dest_dir = training_dir
 	else:
-		for i in range(len(key_url_class_list)):
-			t = threading.Thread(target=download_image, args=(key_url_class_list[i], output_dir))
-			threads.append(t)
-			t.start()
+		dest_dir = output_dir
+	
+	for i in range(len(key_url_class_list)):
+		t = threading.Thread(target=download_image, args=(key_url_class_list[i], dest_dir))
+		threads.append(t)
+		t.start()
 	
 	for i in range(len(key_url_class_list)):
 		threads[i].join()
+
+	if validation_dir is not None:
+		all_dirs = os.listdir(training_dir)
+
+		for directory in all_dirs:
+			next_train_dir = os.path.join(training_dir, directory)
+			next_val_dir = os.path.join(validation_dir, directory)
+			files = os.listdir(next_train_dir)
+			change_dir = int(0.2 * len(files))
+
+			for (i, next_file) in enumerate(files):
+				src = os.path.join(next_train_dir, next_file)
+				dst = os.path.join(next_val_dir, next_file)
+				move(src, dst)
+
+				if i == change_dir:
+					break
+
+	print("Download finished successfully. Data split into trainig and validation sets.")
