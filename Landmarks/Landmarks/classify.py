@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from keras.preprocessing.image import img_to_array, array_to_img, load_img
 from keras.models import Sequential
+from network import build_network
 
 def show(test_data, prediction, img_no):
     classes = ["Florence", "Museu Nacional d'Art de Catalunya"]
@@ -13,11 +14,14 @@ def show(test_data, prediction, img_no):
     plt.axis('off')
 
 def classify(model: Sequential):
-    cos = glob.glob("data/test/*")
+    testing_dir = glob.glob("data/test/*")
     test_data = [
         img_to_array(load_img(filename))
-        for filename in cos
+        for filename in testing_dir
     ]
+
+    if model is None:
+        model = build_network()
     
     model.load_weights('best_model')
     output = model.predict(test_data)
