@@ -1,41 +1,7 @@
-from os import path, makedirs
-from data_downloader import run
+from data_downloader import download_data
 from network import run_training, build_network
 from classify import classify
 from keras.models import Sequential
-
-def download_data():
-	csv_file = input("Type the CSV file name: ")
-
-	if(csv_file[-4:] != ".csv"):
-		csv_file += ".csv"
-
-	print("Select the type of the CSV file (providing train data or test data):")
-
-	file_type = input("A: train data\nB: test data\n")
-	
-	data_path = "data"
-
-	if file_type in ('A', 'a'):
-		training_path = path.join(data_path, "training")
-		validation_path = path.join(data_path, "validation")
-		data_path = (training_path, validation_path)
-
-		if not path.exists(training_path):
-			makedirs(training_path)
-
-		if not path.exists(validation_path):
-			makedirs(validation_path)
-	elif file_type in ('B', 'b'):
-		data_path = path.join(data_path, "testing")
-		
-		if not path.exists(data_path):
-			makedirs(data_path)
-	else:
-		print("Incorrect selection.")
-		return
-		
-	run(csv_file, data_path)
 
 def perform(action_no, model = None):
 	if action_no == 1:
