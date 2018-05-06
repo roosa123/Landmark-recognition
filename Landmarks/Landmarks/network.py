@@ -11,7 +11,7 @@ def check_directories(dir):
         return True
 
 def build_network():
-    in_shape = (None, None, 3)
+    in_shape = (200, 200, 3)
     classes = 2
 
     model = Sequential()
