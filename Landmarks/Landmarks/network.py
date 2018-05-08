@@ -70,11 +70,13 @@ def train(model: Sequential, data: tuple):
     model.fit_generator(
         train_data,
         steps_per_epoch=64,
-        epochs=1000,
+        epochs=500,
         callbacks=[checkpoint],
         validation_data=val_data,
         validation_steps=2
     )
+
+    model.save("cur_model")
 
 def run_training(model: Sequential):
 
