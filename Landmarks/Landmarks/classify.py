@@ -4,7 +4,7 @@ import matplotlib.image as plt_img
 import numpy as np
 from os import path
 from keras.preprocessing.image import ImageDataGenerator
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 from network import build_network
 from os import listdir
 
@@ -13,9 +13,9 @@ def show(test_img, prediction, img_no):
 
     img = plt_img.imread(path.join("data\\testing", test_img))
 
-    plt.imshow(img)     # tu trzeba bedzie pozmieniac
+    plt.imshow(img)
     class_index = np.argmax(prediction)
-    plt.title(classes[img_no] + ": " + str(prediction[class_index]), fontsize=10)
+    plt.title(classes[class_index] + ": " + str(prediction[class_index]), fontsize=10)
     plt.axis('off')
 
     plt.show()
@@ -29,7 +29,8 @@ def classify(model: Sequential):
                     )
 
     if model is None:
-        model = build_network()
+        #model = build_network()
+        load_model("cur_model")
 
     model.load_weights('best_model')
     output = model.predict_generator(test_data)
@@ -38,4 +39,6 @@ def classify(model: Sequential):
     print(len(test_data.filenames))
 
     for i in range(len(output)):
+        print(len(output[i]))
+        print(output[i])
         show(test_data.filenames[i], output[i], i)
