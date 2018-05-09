@@ -18,6 +18,11 @@ data/
 # csv files
 *.csv
 
+# images
+*.png
+*.jpg
+*.svg
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
