@@ -2,7 +2,6 @@ from csv import reader as csv_reader
 from urllib.request import urlretrieve
 from threading import Thread
 from os import path, makedirs, listdir
-from io import StringIO
 from shutil import move
 
 def parse_data(data_file):
@@ -62,27 +61,30 @@ def run(csv_file, output_dir):
 	else:
 		dest_dir = output_dir
 	
-	for i in range(len(key_url_class_list)):
-		t = Thread(target=download_image, args=(key_url_class_list[i], dest_dir))
-		threads.append(t)
-		t.start()
+	# for i in range(len(key_url_class_list)):
+	# 	t = Thread(target=download_image, args=(key_url_class_list[i], dest_dir))
+	# 	threads.append(t)
+	# 	t.start()
 	
-	for i in range(len(key_url_class_list)):
-		threads[i].join()
+	# for i in range(len(key_url_class_list)):
+	# 	threads[i].join()
 
 	if validation_dir is not None:
 		all_dirs = listdir(training_dir)
 
 		for directory in all_dirs:
 			next_train_dir = path.join(training_dir, directory)
-			next_val_dir = path.join(validation_dir, directory)
+			dst_val = path.join(validation_dir, directory)
+
+			if not path.exists(dst_val):
+				makedirs(dst_val)
+
 			files = listdir(next_train_dir)
 			change_dir = int(0.2 * len(files))
 
 			for (i, next_file) in enumerate(files):
 				src = path.join(next_train_dir, next_file)
-				dst = path.join(next_val_dir, next_file)
-				move(src, dst)
+				move(src, dst_val)
 
 				if i == change_dir:
 					break
