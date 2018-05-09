@@ -61,13 +61,13 @@ def run(csv_file, output_dir):
 	else:
 		dest_dir = output_dir
 	
-	# for i in range(len(key_url_class_list)):
-	# 	t = Thread(target=download_image, args=(key_url_class_list[i], dest_dir))
-	# 	threads.append(t)
-	# 	t.start()
+	for i in range(len(key_url_class_list)):
+		t = Thread(target=download_image, args=(key_url_class_list[i], dest_dir))
+		threads.append(t)
+		t.start()
 	
-	# for i in range(len(key_url_class_list)):
-	# 	threads[i].join()
+	for i in range(len(key_url_class_list)):
+		threads[i].join()
 
 	if validation_dir is not None:
 		all_dirs = listdir(training_dir)
