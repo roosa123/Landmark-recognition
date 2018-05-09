@@ -1,7 +1,6 @@
 from data_downloader import download_data
 from network import run_training, build_network
 from classify import classify
-from keras.models import Sequential
 
 def perform(action_no, model = None):
 	if action_no == 1:
