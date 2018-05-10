@@ -1,8 +1,8 @@
 from os import path, listdir
-from keras.models import Sequential, Model
+from keras.models import Model
 from keras.layers import Conv2D, Dropout, Dense, Flatten, Activation, MaxPooling2D, Input
 from keras.preprocessing.image import ImageDataGenerator
-from keras.callbacks import ModelCheckpoint
+from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.utils import plot_model
 
 def check_directories(dir):
@@ -50,18 +50,20 @@ def build_network():
     dropout_2 = Dropout(0.25)(max_pool_2)
 
     # classifier 1 - classifies images
-    flatten_1 = Flatten()(dropout_2)
-    dense_1 = Dense(512, activation='relu')(flatten_1)
-    dropout_3 = Dropout(0.25)(dense_1)
-    out_1 = Dense(classes, activation='softmax')(dropout_3)
+    flatten_1_1 = Flatten()(dropout_2)
+    dense_1_1 = Dense(512, activation='relu')(flatten_1_1)
+    dropout_3_1 = Dropout(0.25)(dense_1_1)
+    out_1 = Dense(classes, activation='softmax')(dropout_3_1)
 
     # classifier 2 - locates objects
-    flatten_2 = Flatten()(dropout_2)
-    dense_1_2 = Dense(512, activation='relu')(flatten_2)
-    dropout_3_2 = Dropout(0.25)(dense_1_2)
-    out_2 = Dense(classes, activation='softmax')(dropout_3_2)
+    # flatten_1_2 = Flatten()(dropout_2)
+    # dense_1_2 = Dense(512, activation='relu')(flatten_1_2)
+    # dropout_3_2 = Dropout(0.25)(dense_1_2)
+    # out_2 = Dense(classes, activation='softmax')(dropout_3_2)
 
-    model = Model(inputs=network_input, outputs=[out_1, out_2])
+    # model = Model(inputs=network_input, outputs=[out_1, out_2])
+
+    model = Model(inputs=network_input, outputs=out_1)
 
     model.compile(loss='categorical_crossentropy',
                 optimizer='adam',
@@ -92,33 +94,33 @@ def preprocess_data():
 
     return (train_data, validation_data)
 
-def train(model: Sequential, data: tuple):
+def train(model: Model, data: tuple):
     (train_data, val_data) = data
 
     checkpoint = ModelCheckpoint('best_model', monitor='val_loss', save_best_only=True)
+    early_stopping = EarlyStopping(monitor='val_loss', min_delta=0.005, patience=5)
 
     model.fit_generator(
         train_data,
         steps_per_epoch=64,
         epochs=500,
-        callbacks=[checkpoint],
+        callbacks=[checkpoint, early_stopping],
         validation_data=val_data,
         validation_steps=2
     )
 
     model.save("cur_model")
 
-def run_training(model: Sequential):
-
+def run_training(model: Model):
     train_data_dir = "data\\training"
     validation_data_dir = "data\\validation"
 
     if not check_directories(train_data_dir):
-        print("Unable to run training - no training data provided.\nAborting training.\n")
+        print("Unable to run training - no training data found.\nAborting training.\n")
         return
     
     if not check_directories(validation_data_dir):
-        print("Unable to run training - no validation data provided.\nAborting training.\n")
+        print("Unable to run training - no validation data found.\nAborting training.\n")
         return
 
     print("\nAttempting to train the network...")
