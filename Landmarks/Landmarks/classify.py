@@ -21,7 +21,7 @@ def show(test_img, prediction, img_no):
 
     plt.show()
 
-def classify(model: Model):
+def classify():
     test_data_generator = ImageDataGenerator()
     test_data = test_data_generator.flow_from_directory(
                     'data\\testing',
@@ -29,10 +29,9 @@ def classify(model: Model):
                     batch_size=32
                     )
 
-    if model is None:
-        load_model("cur_model")
-
+    model = load_model("cur_model")
     model.load_weights('best_model')
+
     output = model.predict_generator(test_data)
 
     print(len(output))
@@ -43,11 +42,11 @@ def classify(model: Model):
         print(output[i])
         show(test_data.filenames[i], output[i], i)
 
-def run_classification(model: Model):
+def run_classification():
     test_dir = "data\\testing"
 
     if not check_directories(test_dir):
         print("Unable to run classification - no testing data found.\nAborting classsification.\n")
         return
 
-    classify(model)
+    classify()

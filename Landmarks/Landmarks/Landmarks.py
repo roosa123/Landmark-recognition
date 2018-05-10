@@ -1,23 +1,19 @@
 from data_downloader import download_data
-from network import run_training, build_network
-from classify import classify
+from network import run_training
+from classify import run_classification
 
-def perform(action_no, model = None):
+def perform(action_no):
 	if action_no == 1:
 		download_data()
 	elif action_no == 2:
-		model = build_network()
-		run_training(model)
+		run_training()
 	elif action_no == 3:
-		classify(model)
+		run_classification()
 	else:
 		return
 
-	return model
-
 def main():
 	cmd_no = 0
-	model = None
 
 	while cmd_no != 5:
 		print("\nAvailable actions:\n")
@@ -41,10 +37,7 @@ def main():
 			print("Incorrect selection.")
 			continue
 
-		if model is None:
-			model = perform(cmd_no)
-		else:
-			perform(cmd_no, model=model)
+		perform(cmd_no)
 	
 	print("Exiting program.")
 

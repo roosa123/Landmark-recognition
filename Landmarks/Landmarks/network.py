@@ -111,7 +111,7 @@ def train(model: Model, data: tuple):
 
     model.save("cur_model")
 
-def run_training(model: Model):
+def run_training():
     train_data_dir = "data\\training"
     validation_data_dir = "data\\validation"
 
@@ -125,6 +125,6 @@ def run_training(model: Model):
 
     print("\nAttempting to train the network...")
 
+    model = build_network()
     futer_do_sieci = preprocess_data()
-
     train(model, futer_do_sieci)
