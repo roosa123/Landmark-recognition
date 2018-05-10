@@ -5,10 +5,4 @@ def check_directories(dir):
         return False
     else:
         return True
-
-def check_files(name):
-    if not path.exists(name):
-        return False
-    else:
-        return True
         
