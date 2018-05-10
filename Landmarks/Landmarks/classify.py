@@ -4,9 +4,10 @@ import matplotlib.image as plt_img
 import numpy as np
 from os import path
 from keras.preprocessing.image import ImageDataGenerator
-from keras.models import Sequential, load_model
+from keras.models import Model, load_model
 from network import build_network
 from os import listdir
+from network import check_directories
 
 def show(test_img, prediction, img_no):
     classes = ["Florence", "Museu Nacional d'Art de Catalunya"]
@@ -20,7 +21,7 @@ def show(test_img, prediction, img_no):
 
     plt.show()
 
-def classify(model: Sequential):
+def classify(model: Model):
     test_data_generator = ImageDataGenerator()
     test_data = test_data_generator.flow_from_directory(
                     'data\\testing',
@@ -29,7 +30,6 @@ def classify(model: Sequential):
                     )
 
     if model is None:
-        #model = build_network()
         load_model("cur_model")
 
     model.load_weights('best_model')
@@ -42,3 +42,12 @@ def classify(model: Sequential):
         print(len(output[i]))
         print(output[i])
         show(test_data.filenames[i], output[i], i)
+
+def run_classification(model: Model):
+    test_dir = "data\\testing"
+
+    if not check_directories(test_dir):
+        print("Unable to run classification - no testing data found.\nAborting classsification.\n")
+        return
+
+    classify(model)
