@@ -4,12 +4,7 @@ from keras.layers import Conv2D, Dropout, Dense, Flatten, Activation, MaxPooling
 from keras.preprocessing.image import ImageDataGenerator
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.utils import plot_model
-
-def check_directories(dir):
-    if not path.exists(dir) or listdir(dir) == []:
-        return False
-    else:
-        return True
+from utilities import check_directories
 
 def build_network():
     network_input = Input(shape=(200, 200, 3))

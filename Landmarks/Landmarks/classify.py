@@ -2,12 +2,11 @@ import glob
 import matplotlib.pyplot as plt
 import matplotlib.image as plt_img
 import numpy as np
-from os import path
+from os import path, listdir
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Model, load_model
 from network import build_network
-from os import listdir
-from network import check_directories
+from utilities import check_directories, check_files
 
 def show(test_img, prediction, img_no):
     classes = ["Florence", "Museu Nacional d'Art de Catalunya"]
@@ -30,7 +29,7 @@ def classify():
                     )
 
     model = load_model("cur_model")
-    model.load_weights('best_model')
+    model.load_weights("best_model")
 
     output = model.predict_generator(test_data)
 
@@ -47,6 +46,14 @@ def run_classification():
 
     if not check_directories(test_dir):
         print("Unable to run classification - no testing data found.\nAborting classsification.\n")
+        return
+
+    if not check_directories("cur_model"):
+        print("no cur_model")
+        return
+
+    if not check_files("best_model") or not check_files("cur_model"):
+        print("Unable to run classification - no models found.\nAborting classification.\n")
         return
 
     classify()
