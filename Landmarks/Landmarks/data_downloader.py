@@ -16,27 +16,7 @@ def parse_data(data_file):
 	return key_url_class_list[1:]  # Chop off header
 
 
-def download_image(key_url_class, out_dir):
-	download_args_size = len(key_url_class)
-
-	if download_args_size == 2:
-		(key, url) = key_url_class
-		filename = path.join(out_dir, '%s.jpg' % key)
-	elif download_args_size == 3:
-		(key, url, img_class) = key_url_class
-
-		if img_class not in ("6651", "6696"):		# just temporarily
-			return
-
-		directory = path.join(out_dir, img_class)
-		filename = path.join(directory, '%s_%s.jpg' % (img_class, key))
-
-		if not path.exists(directory):
-			makedirs(directory)
-	else:
-		print("Incorrect download arguments")
-		return
-
+def download_image(key, url, filename):
 	if path.exists(filename):
 		print('Image %s already exists. Skipping download.' % filename)
 		return
@@ -46,6 +26,31 @@ def download_image(key_url_class, out_dir):
 	except:
 		print('Warning: Could not download image %s from %s' % (key, url))
 		return
+
+def download_chunk(key_url_class, out_dir):
+	download_args_size = len(key_url_class[0])
+	
+	for i in range(len(key_url_class)):
+		if download_args_size == 2:
+			(key, url) = key_url_class[i]
+			filename = path.join(out_dir, '%s.jpg' % key)
+		elif download_args_size == 3:
+			(key, url, img_class) = key_url_class[i]
+
+			#if img_class not in ("6651", "6696"):		# just temporarily
+			if img_class not in ("5376", "6696"):		# just temporarily
+				continue
+
+			directory = path.join(out_dir, img_class)
+			filename = path.join(directory, '%s_%s.jpg' % (img_class, key))
+
+			if not path.exists(directory):
+				makedirs(directory)
+		else:
+			print("Incorrect download arguments")
+			return
+
+		download_image(key, url, filename)
 
 def run(csv_file, output_dir):
 	print("\nRunning download...")
@@ -60,14 +65,19 @@ def run(csv_file, output_dir):
 		dest_dir = training_dir
 	else:
 		dest_dir = output_dir
+
+	num_threads = 100
+	single_chunk_size = int(len(key_url_class_list) / num_threads)
 	
-	for i in range(len(key_url_class_list)):
-		t = Thread(target=download_image, args=(key_url_class_list[i], dest_dir))
+	for i in range(num_threads):
+		t = Thread(target=download_chunk, args=(key_url_class_list[i * single_chunk_size : (i + 1) * single_chunk_size], dest_dir))
 		threads.append(t)
 		t.start()
 	
-	for i in range(len(key_url_class_list)):
+	for i in range(num_threads):
 		threads[i].join()
+
+	print("Attempting to split data into training and validation sets...")
 
 	if validation_dir is not None:
 		all_dirs = listdir(training_dir)
@@ -83,13 +93,15 @@ def run(csv_file, output_dir):
 			change_dir = int(0.2 * len(files))
 
 			for (i, next_file) in enumerate(files):
-				src = path.join(next_train_dir, next_file)
-				move(src, dst_val)
-
 				if i == change_dir:
 					break
+					
+				src = path.join(next_train_dir, next_file)
 
-	print("Download finished successfully. Data split into trainig and validation sets.")
+				if not path.exists(path.join(dst_val, next_file)):
+					move(src, dst_val)
+
+	print("Download finished successfully. Data split into training and validation sets.")
 
 def download_data():
 	csv_file = input("Type the CSV file name: ")
