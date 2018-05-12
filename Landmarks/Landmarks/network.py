@@ -5,10 +5,13 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.utils import plot_model
 from utilities import check_directories
+from PIL import ImageFile
+
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 def build_network():
-    network_input = Input(shape=(200, 200, 3))
-    in_shape = (200, 200, 3)
+    network_input = Input(shape=(128, 128, 3))
+    in_shape = (128, 128, 3)
     classes = 2
 
     # model = Sequential()
@@ -35,18 +38,20 @@ def build_network():
     # model.add(Activation('softmax'))
 
     # convolutional layers
-    conv_1 = Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=in_shape)(network_input)
-    conv_2 = Conv2D(32, (3, 3), activation='relu')(conv_1)
-    max_pool_1 = MaxPooling2D(pool_size=(2,2))(conv_2)
+    conv_1 = Conv2D(32, 3, padding='same', activation='relu', input_shape=in_shape)(network_input)
+    conv_2 = Conv2D(48, 3, activation='relu')(conv_1)
+    conv_3 = Conv2D(64, 3, activation='relu')(conv_2)
+    max_pool_1 = MaxPooling2D(pool_size=(2,2))(conv_3)
     dropout_1 = Dropout(0.25)(max_pool_1)
-    conv_3 = Conv2D(64, (3, 3), activation='relu', padding='same')(dropout_1)
-    conv_4 = Conv2D(64, (3, 3), activation='relu')(conv_3)
-    max_pool_2 = MaxPooling2D(pool_size=(2,2))(conv_4)
+    conv_4 = Conv2D(32, 3, activation='relu', padding='same')(dropout_1)
+    conv_5 = Conv2D(48, 3, activation='relu')(conv_4)
+    conv_6 = Conv2D(64, 3, activation='relu')(conv_5)
+    max_pool_2 = MaxPooling2D(pool_size=(2,2))(conv_6)
     dropout_2 = Dropout(0.25)(max_pool_2)
 
     # classifier 1 - classifies images
     flatten_1_1 = Flatten()(dropout_2)
-    dense_1_1 = Dense(512, activation='relu')(flatten_1_1)
+    dense_1_1 = Dense(128, activation='relu')(flatten_1_1)
     dropout_3_1 = Dropout(0.25)(dense_1_1)
     out_1 = Dense(classes, activation='softmax')(dropout_3_1)
 
@@ -79,12 +84,12 @@ def preprocess_data():
                     width_shift_range=0.1
                 ).flow_from_directory(
                     'data\\training',
-                    target_size=(200, 200),
+                    target_size=(128, 128),
                     batch_size=32
                 )
     validation_data = ImageDataGenerator().flow_from_directory(
                     'data\\validation',
-                    target_size=(200, 200),
+                    target_size=(128, 128),
                 )
 
     return (train_data, validation_data)
