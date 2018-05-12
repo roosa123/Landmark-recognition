@@ -8,7 +8,7 @@ from network import build_network
 from utilities import check_directories
 
 def show(test_img, prediction, img_no):
-    classes = ["Florence", "Museu Nacional d'Art de Catalunya"]
+    classes = ["Ponte di Rialto", "Museu Nacional d'Art de Catalunya"]
 
     img = plt_img.imread(path.join("data\\testing", test_img))
 
