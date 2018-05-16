@@ -48,9 +48,14 @@ def build_network():
     conv_6 = Conv2D(64, 3, activation='relu')(conv_5)
     max_pool_2 = MaxPooling2D(pool_size=(2,2))(conv_6)
     dropout_2 = Dropout(0.25)(max_pool_2)
+    conv_7 = Conv2D(32, 3, activation='relu', padding='same')(dropout_2)
+    conv_8 = Conv2D(48, 3, activation='relu')(conv_7)
+    conv_9 = Conv2D(64, 3, activation='relu')(conv_8)
+    max_pool_3 = MaxPooling2D(pool_size=(2,2))(conv_9)
+    dropout_3 = Dropout(0.25)(max_pool_3)
 
     # classifier 1 - classifies images
-    flatten_1_1 = Flatten()(dropout_2)
+    flatten_1_1 = Flatten()(dropout_3)
     dense_1_1 = Dense(128, activation='relu')(flatten_1_1)
     dropout_3_1 = Dropout(0.25)(dense_1_1)
     out_1 = Dense(classes, activation='softmax')(dropout_3_1)
@@ -109,18 +114,16 @@ def train(model: Model, data: tuple):
         validation_steps=2
     )
 
-    model.save("cur_model")
-
 def run_training():
     train_data_dir = "data\\training"
     validation_data_dir = "data\\validation"
 
     if not check_directories(train_data_dir):
-        print("Unable to run training - no training data found.\nAborting training.\n")
+        print("Unable to run training - no train data found.\nTraining aborted.\n")
         return
     
     if not check_directories(validation_data_dir):
-        print("Unable to run training - no validation data found.\nAborting training.\n")
+        print("Unable to run training - no validation data found.\nTraining aborted.\n")
         return
 
     print("\nAttempting to train the network...")

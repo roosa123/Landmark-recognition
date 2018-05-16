@@ -27,8 +27,7 @@ def classify():
                     batch_size=32
                     )
 
-    model = load_model("cur_model")
-    model.load_weights("best_model")
+    model = load_model("best_model")
 
     output = model.predict_generator(test_data)
 
@@ -44,11 +43,11 @@ def run_classification():
     test_dir = "data\\testing"
 
     if not check_directories(test_dir):
-        print("Unable to run classification - no testing data found.\nAborting classsification.\n")
+        print("Unable to run classification - no test data found.\nClasssification aborted.\n")
         return
 
-    if not path.exists("best_model") or not path.exists("cur_model"):
-        print("Unable to run classification - no models found.\nAborting classification.\n")
+    if not path.exists("best_model"):
+        print("Unable to run classification - no model found.\nClasssification aborted.\n")
         return
 
     classify()
