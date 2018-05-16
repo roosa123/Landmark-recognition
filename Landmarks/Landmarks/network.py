@@ -76,7 +76,11 @@ def build_network():
 
     # model summaries - in the form of the jpg image with schematics and a printed table
 
-    plot_model(model, to_file="model.jpg", show_layer_names=True, show_shapes=True)
+    try:
+        plot_model(model, to_file="model.jpg", show_layer_names=True, show_shapes=True)
+    except:
+        print("Unable to plot the model architecture - have you got installed Graphviz?\nSkipping plotting.\n")
+    
     model.summary()
 
     return model

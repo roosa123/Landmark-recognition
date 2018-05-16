@@ -23,7 +23,7 @@ def classify():
     test_data_generator = ImageDataGenerator()
     test_data = test_data_generator.flow_from_directory(
                     'data\\testing',
-                    target_size=(200, 200),
+                    target_size=(128, 128),
                     batch_size=32
                     )
 
