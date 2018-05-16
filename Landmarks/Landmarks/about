@@ -1,0 +1,10 @@
+"Landmarks" is a project prepared for the Biologically Inspired Artificial Intelligence subject, conducted in Silesian University of Technology, Faculty of Automatic Control, Electronics and Computer Science.
+The aim of the project is to prepare a program, which will be able to recognize specific landmarks in the given photos, using artificial neural network.
+The program has a text interface, all commands are send by typing specific numbers or letters and confirming the choice with Enter. The program gives following options:
+1 - downloading data
+2 - train.
+3 - test.
+4 - about&help
+5 - exit
+
+To read more about the options, please exit this section by pressing "Esc" key and following instructions.

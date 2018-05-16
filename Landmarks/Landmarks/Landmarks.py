@@ -1,6 +1,7 @@
 from data_downloader import download_data
 from network import run_training
 from classify import run_classification
+from help_about import show_help
 
 def perform(action_no):
 	if action_no == 1:
@@ -9,6 +10,8 @@ def perform(action_no):
 		run_training()
 	elif action_no == 3:
 		run_classification()
+	elif action_no == 4:
+		show_help()
 	else:
 		return
 
