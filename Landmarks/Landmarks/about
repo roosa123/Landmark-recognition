@@ -18,7 +18,7 @@ All of the given versions are those, which were used during creating the project
 
 To run the project, there should be installed following libraries (all of them are possible to install via pip):
 
-    - TensorFlow, version 1.8.0
+    - TensorFlow, version 1.8.0 (it is highly recommended to use GPU version of the library)
     - Keras, version 2.1.6
     - matplotlib, version 2.2.2
     - pillow (PIL), version 5.1.0

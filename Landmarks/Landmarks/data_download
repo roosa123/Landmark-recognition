@@ -52,3 +52,7 @@ Before the download starts, the folder structure is created. It can be shown as 
     |    --test_images      (just for example; the names of the class folders are equal to the ID from the CSV file)
 
 The structure of the directories is created automatically and whole program uses it. If you wish to provide data by yourself, you should create the same structure manually.
+
+SPLITTING THE DATA INTO TRAINING AND VALIDATION SETS
+
+The data is split into training and validation sets after download in fact, by using brute force. 20% of the images from each class in the training directory is designated to create the validation set and is simply moved to the proper location in the validation directory.
