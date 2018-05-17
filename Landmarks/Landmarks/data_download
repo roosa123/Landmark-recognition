@@ -7,13 +7,48 @@ TRAIN FILE FORMAT
 The file should be in the CSV format. The name isn't fixed - it is possible to pick whatever. It should contain the header (or at least one free row), the main data should start in the second row.
 Each row of the file should contain:
 
-    - ID: id of the photo. It should be unique at least in the range of the single class. It is used as a aprt of the name of the downloaded image file.
+    - ID: id of the photo. It should be unique at least in the range of the single class. It is used as a part of the name of the downloaded image file.
     - URL: the url of the image. It should give direct access to the image, not to the website, which contains it.
     - LANDMARK ID: the id of the landmark, it can (and in fact should) be considered as the id of the class of the training images.
     
 All of the above attributes should be placed in single line for each photo and separated with a comma without spaces - depending on the regional options, it is sometimes considered as placing data in separate cells, sometimes not (the program doesn't accept semicolons as separators).
-Any of the presented above features should not be blank (eg. such line is unacceptable: 2n234bwqjknr21,,6512)
+Any of the presented above features should be blank (eg. such line is unacceptable: 2n234bwqjknr21,,6512)
 
 TEST FILE FORMAT
 
-Similar to train file, the test file should be a CSV file named in any way.
+Similarly to the train file, the test file should be a CSV file named in any way with first row containing the header (or empty). Each row should contain:
+
+    - ID: id of the photo. It should be unique in the range of whole set. It is used as a name of the downloaded image file.
+    - URL: the url of the image. It should give direct access to the image, not to the website, which contains it.
+
+Similarly to the train file, described attributes should be placed in single line for each photo, with a comma as a delimiter (without spaces) and any of them should be blank.
+
+DIRECTORY STRUCTURE
+
+Before the download starts, the folder structure is created. It can be shown as follows:
+
+--data                       (main directory)
+    |
+    --training              (training sets; contains one directory per class)
+    |   |
+    |    --6651             (just for example; the names of the class folders are equal to the ID from the CSV file)
+    |    |
+    |    --6696
+    |    |
+    |    -- 5376
+    |    |
+    |    -- ...
+    -- validation           (validation sets; contains one directory per class)
+    |   |
+    |    --6651             (just for example; the names of the class folders are equal to the ID from the CSV file)
+    |    |
+    |    --6696
+    |    |
+    |    -- 5376
+    |    |
+    |    -- ...
+    --testing               (testing sets; contains single directory with all testing images)
+    |   |
+    |    --test_images      (just for example; the names of the class folders are equal to the ID from the CSV file)
+
+The structure of the directories is created automatically and whole program uses it. If you wish to provide data by yourself, you should create the same structure manually.
