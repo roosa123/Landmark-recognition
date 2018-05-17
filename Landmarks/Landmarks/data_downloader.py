@@ -126,7 +126,7 @@ def download_data():
 		if not path.exists(validation_path):
 			makedirs(validation_path)
 	elif file_type in ('B', 'b'):
-		data_path = path.join(data_path, "testing")
+		data_path = path.join(data_path, "testing\\test_images")
 		
 		if not path.exists(data_path):
 			makedirs(data_path)

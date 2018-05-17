@@ -31,12 +31,7 @@ def classify():
 
     output = model.predict_generator(test_data)
 
-    print(len(output))
-    print(len(test_data.filenames))
-
     for i in range(len(output)):
-        print(len(output[i]))
-        print(output[i])
         show(test_data.filenames[i], output[i], i)
 
 def run_classification():
