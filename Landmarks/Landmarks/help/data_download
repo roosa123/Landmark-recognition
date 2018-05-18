@@ -1,3 +1,4 @@
+
 ############ DATA DOWNLOADING ############
 
 This option downloads the data specified in the given CSV file. It is recommended to use this option for preapration of the data sets, because it also creates specific directory structure, which is required for other options of the program to work.

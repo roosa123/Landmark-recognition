@@ -12,8 +12,10 @@ def perform(action_no):
 		run_classification()
 	elif action_no == 4:
 		show_help()
+	elif action_no == 5:
+		print("Exiting program.")
 	else:
-		return
+		print("There's no such option.")
 
 def main():
 	cmd_no = 0
@@ -32,7 +34,7 @@ def main():
 		print("4 - about&help")
 		print("5 - exit\n")
 
-		command = input("Please select action (type in the number of desired option): ")
+		command = input("Please select action (type the number of desired option): ")
 		
 		try:
 			cmd_no = int(command)
@@ -41,8 +43,6 @@ def main():
 			continue
 
 		perform(cmd_no)
-	
-	print("Exiting program.")
 
 
 main()
