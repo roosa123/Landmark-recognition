@@ -1,3 +1,4 @@
+import numpy as np
 from os import path, listdir
 from keras.models import Model
 from keras.layers import Conv2D, Dropout, Dense, Flatten, Activation, MaxPooling2D, Input
@@ -8,6 +9,9 @@ from utilities import check_directories
 from PIL import ImageFile
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
+
+def normalize_image(n):
+    return np.divide(np.subtract(np.array(n), 127.5), 127.5)
 
 def build_network():
     network_input = Input(shape=(128, 128, 3))
@@ -90,13 +94,16 @@ def preprocess_data():
                     rotation_range=45,
                     horizontal_flip=True,
                     height_shift_range=0.1,
-                    width_shift_range=0.1
+                    width_shift_range=0.1,
+                    preprocessing_function=normalize_image
                 ).flow_from_directory(
                     'data\\training',
                     target_size=(128, 128),
                     batch_size=32
                 )
-    validation_data = ImageDataGenerator().flow_from_directory(
+    validation_data = ImageDataGenerator(
+                    preprocessing_function=normalize_image
+                ).flow_from_directory(
                     'data\\validation',
                     target_size=(128, 128),
                 )
