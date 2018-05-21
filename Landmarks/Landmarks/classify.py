@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib.image as plt_img
 import numpy as np
+from matplotlib import rcParams
 from os import path, listdir
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Model, load_model
@@ -17,7 +18,9 @@ def show(test_img, prediction, img_no):
     plt.title(classes[class_index] + ": " + str(prediction[class_index]), fontsize=10)
     plt.axis('off')
 
-    plt.show()
+    # plt.show()
+    plt.pause(.1)
+    plt.draw()
 
 def classify():
     test_data_generator = ImageDataGenerator()
@@ -31,8 +34,12 @@ def classify():
 
     output = model.predict_generator(test_data)
 
+    rcParams['toolbar'] = 'None'
+
     for i in range(len(output)):
         show(test_data.filenames[i], output[i], i)
+
+    plt.close()
 
 def run_classification():
     test_dir = "data\\testing"

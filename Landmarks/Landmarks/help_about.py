@@ -11,7 +11,7 @@ def show(option):
         print("Exiting help.")
         return
     else:
-        print("There's no such option")
+        print("There's no such option.")
         return
 
     with open(help_file) as f:
