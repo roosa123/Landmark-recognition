@@ -1,3 +1,26 @@
 
 ############ TRAINING ############
 
+PREREQUISITIES
+
+To run training, it is necessary to download training images. It is recommended to perform this by using option 1 - download images, because of the created directory structure. Exact reasons are explained in the next paragraph.
+
+CLASSES
+
+Classes are detected as subdirectories in 'data\\training' and 'data\\validation' directory. It is a requirement enforced by used framework (the way Keras recognizes classes). Each of these subdirectories is supposed to contain photos of single landmark.
+
+IMAGE ACQUISITION
+
+Training images are yielded to the network in 8-image batches from 'data\\training' directory, whereas validation images are yielded in 32-image batches from 'data\\validation' directory.
+
+IMAGE PREPROCESSING
+
+Before images are fed to the netowrk, the set is preprocessed. The augmentation includes random shifts, rotations and flips of the images, but the most important is image normalization. The normalization changes the range of each image from 0..255 to -1..1. The goal of reducing pixel values is to provide better values for finding minimums.
+
+TRAINING
+
+Training is run by selecting the option 2 in the mian menu of the program. Firstly, the presence of the training and validation sets is checked. If there's no data, trainig isn't performed and the program returns to the main menu.
+After checking the data, the network is built. The process is summarized in two ways - by prezenting basic information on the stdout and by printing the network archiecture to the JPG file. Printing to the JPG file can be performed only when the user has installed Graphviz.
+The next step is image preprocessing, which has been described yet. As a result, the netowrk is provided with two data generators - one for the training data and one for the validation data.
+Finally, the training is performed. During training, the validation loss is monitored. According to this parameter, the best model is selected and then saved on the drive (so it can be easily loaded to perform the classification).
+The maximal amount of epochs is 500, but it can be shortened - if the velidation loss isn't improving by the value of 0.002 for certain priod (5 epochs), training is automatically stopped.
