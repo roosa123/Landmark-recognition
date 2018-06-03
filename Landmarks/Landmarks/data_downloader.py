@@ -73,6 +73,11 @@ def run(csv_file, output_dir):
 		t = Thread(target=download_chunk, args=(key_url_class_list[i * single_chunk_size : (i + 1) * single_chunk_size], dest_dir))
 		threads.append(t)
 		t.start()
+
+	if single_chunk_size * num_threads < len(key_url_class_list):
+		t = Thread(target=download_chunk, args=(key_url_class_list[num_threads * single_chunk_size :], dest_dir))
+		threads.append(t)
+		t.start()
 	
 	for i in range(num_threads):
 		threads[i].join()

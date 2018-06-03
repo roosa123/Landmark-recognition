@@ -298,5 +298,5 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 
-Landmarks/Landmarks/best_model
+Landmarks/Landmarks/best_model*
 Landmarks/Landmarks/cur_model
