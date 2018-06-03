@@ -5,7 +5,7 @@ from matplotlib import rcParams
 from os import path, listdir
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Model, load_model
-from network import build_network
+from network import build_network, normalize_image
 from utilities import check_directories
 
 def show(test_img, prediction, img_no):
@@ -19,18 +19,19 @@ def show(test_img, prediction, img_no):
     plt.axis('off')
 
     # plt.show()
-    plt.pause(.1)
+    plt.pause(.6)
     plt.draw()
 
 def classify():
-    test_data_generator = ImageDataGenerator()
-    test_data = test_data_generator.flow_from_directory(
+    test_data = ImageDataGenerator(
+                    preprocessing_function=normalize_image
+                ).flow_from_directory(
                     'data\\testing',
                     target_size=(128, 128),
                     batch_size=32
-                    )
+                )
 
-    model = load_model("best_model")
+    model = load_model("best_model_loss")
 
     output = model.predict_generator(test_data)
 
