@@ -1,3 +1,22 @@
 
 ############ CLASSIFICATION ############
 
+PREREQUISITIES
+
+To run classification, it is necessary to download testing images. It is recommended to perform this by using option 1 - download images, because of the created directory structure. Exact reasons are explained in the next paragraph.
+There is also checked presence of the trained model - the program looks for model named 'best_model'. It is recommended to use model trained using option 2 - training, because of naming files and their placing in the structure.
+
+MODEL FILE
+
+The trained model saved during training is in HDF5 file format. Any other format isn't accepted in loading model for classification purposes. What's more, the file has its specified places in the directory structure of the program and cannot be loaded from any other location.
+If the user wants to use a trained model from other sources, it should be named and placed in the same way as it is performed by using option 2. Also, the file format should be HDF5.
+
+
+IMAGE ACQUISITION
+
+Images used in classification are placed in 'data\\testing' directory, in the 'test_images' subdirectory. Such structure is a requirement enforced by used framework (the way Keras ImageDataGenerator finds images). This subdirectory is supposed to contain all testing images, which will be use during classification.
+
+CLASSIFICATION
+
+Classification is run by selecting the option 3 in the main menu of the program. Firstly, the presence of the testing set is checked. If there's no data, classification isn't performed and the program returns to the main menu.
+After checking the data, classification is performed. Images are fed to the network using the same generator as during training. After the classification finishes, images with predicted class' name and the accuracy of predictions are shown.
