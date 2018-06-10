@@ -28,12 +28,13 @@ def classify():
                 ).flow_from_directory(
                     'data\\testing',
                     target_size=(128, 128),
-                    batch_size=32
+                    batch_size=8,
+                    shuffle=False
                 )
 
     model = load_model("best_model")
 
-    output = model.predict_generator(test_data)
+    output = model.predict_generator(test_data, verbose=1)
 
     rcParams['toolbar'] = 'None'
 
