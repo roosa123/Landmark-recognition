@@ -31,7 +31,7 @@ def classify():
                     batch_size=32
                 )
 
-    model = load_model("best_model_loss")
+    model = load_model("best_model")
 
     output = model.predict_generator(test_data)
 
