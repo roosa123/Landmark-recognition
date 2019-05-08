@@ -15,15 +15,11 @@ def show(option):
         return
 
     with open(help_file) as f:
-        help_text = f.read()
-
-    print(help_text)
+        print(f.read())
 
 def show_help():
     with open("help\\about", "r") as f:
-        about_text = f.read()
-
-    print(about_text)
+        print(f.read())
 
     sel_no = 0
 
