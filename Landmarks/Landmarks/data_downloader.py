@@ -38,7 +38,9 @@ def download_chunk(key_url_class, out_dir):
 			(key, url, img_class) = key_url_class[i]
 
 			#if img_class not in ("6651", "6696"):		# just temporarily
-			if img_class not in ("5376", "6696"):		# just temporarily
+			# if img_class not in ("5376", "6696"):		# just temporarily
+			if img_class not in ("9779", "8429"):		# just temporarily
+			# if img_class not in ("5554", "2743", "2061", "6651"):		# just temporarily
 				continue
 
 			directory = path.join(out_dir, img_class)
