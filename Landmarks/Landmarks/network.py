@@ -13,22 +13,56 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 def normalize_image(n):
     return np.divide(np.subtract(np.array(n), 127.5), 127.5)
 
-def build_network():
+def build_network(classes):
     network_input = Input(shape=(128, 128, 3))
     in_shape = (128, 128, 3)
-    classes = 2
+    # classes = 8
+
+    # model = Sequential()
+
+    # model.add(Conv2D(32, (3, 3), activation='relu', strides=2, input_shape=in_shape))
+    # model.add(Conv2D(32, (3, 3), activation='relu', strides=2))
+    # # model.add(MaxPooling2D(pool_size=(2,2)))
+    # # model.add(Dropout(0.25))
+
+    # model.add(Conv2D(64, (3, 3), activation='relu', strides=2))
+    # model.add(Conv2D(64, (3, 3), activation='relu', strides=2))
+    # # model.add(MaxPooling2D(pool_size=(2,2)))
+    # model.add(Dropout(0.25))
+
+    # model.add(Flatten())
+
+    # model.add(Dense(64, activation='relu'))
+    # model.add(Dropout(0.5))
+    # model.add(Dense(classes, activation='softmax'))
+
+    ######################################
 
     model = Sequential()
 
-    model.add(Conv2D(32, (3, 3), activation='relu', strides=2, input_shape=in_shape))
-    model.add(Conv2D(32, (3, 3), activation='relu', strides=2))
+    model.add(Conv2D(32, (3, 3), activation='relu', input_shape=in_shape))
+    model.add(Conv2D(32, (3, 3), activation='relu'))
+    # model.add(Conv2D(64, (3, 3), activation='relu'))
+
+    # model.add(BatchNormalization())
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(0.25))
+
+    model.add(Conv2D(64, (3, 3), activation='relu'))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
+    # model.add(Conv2D(128, (3, 3), activation='relu'))
+
+    # model.add(BatchNormalization())
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Dropout(0.25))
+
+    # model.add(Conv2D(128, (3, 3), activation='relu'))
+    model.add(Conv2D(128, (3, 3), activation='relu'))
+    model.add(Conv2D(128, (3, 3), activation='relu', strides=2))
+
+    # # model.add(BatchNormalization())
     # model.add(MaxPooling2D(pool_size=(2,2)))
     # model.add(Dropout(0.25))
-
-    model.add(Conv2D(64, (3, 3), activation='relu', strides=2))
-    model.add(Conv2D(64, (3, 3), activation='relu', strides=2))
-    # model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.25))
 
     model.add(Flatten())
 
@@ -36,7 +70,6 @@ def build_network():
     model.add(Dropout(0.5))
     model.add(Dense(classes, activation='softmax'))
 
-    ######################################
     # conv_1 = Conv2D(32, 3, padding='same', activation='relu', input_shape=in_shape)(network_input)
     # conv_2 = Conv2D(48, 3, activation='relu')(conv_1)
     # conv_3 = Conv2D(64, 3, activation='relu')(conv_2)
@@ -159,6 +192,9 @@ def run_training():
 
     print("\nAttempting to train the network...")
 
-    model = build_network()
     futer_do_sieci = preprocess_data()
+
+    (train_set, val_set) = futer_do_sieci
+    model = build_network(train_set.num_classes)
+
     train(model, futer_do_sieci)
